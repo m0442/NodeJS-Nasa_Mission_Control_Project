@@ -13,7 +13,7 @@
     "test": "npm test --prefix server && npm test --prefix client"
   },
   "keywords": [],
-  "author": "",
+  "author": "m0442",
   "license": "ISC",
   "description": "",
   "devDependencies": {
