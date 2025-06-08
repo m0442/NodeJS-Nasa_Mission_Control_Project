@@ -2,7 +2,10 @@ const fs = require("fs");
 const path = require("path");
 const { parse } = require("csv-parse");
 
-const habitablePlanets = [];
+const planets = require("./planets.mongo");
+
+// This array is not being populated. If you want the count at the end to work,
+// you should add `habitablePlanets.push(data);` inside the 'if' block below.
 
 // Function to check if a planet is habitable
 function isHabitablePlanet(planet) {
@@ -26,10 +29,12 @@ function loadPlanetsData() {
           columns: true, // Convert each row into a JavaScript object
         })
       )
-      .on("data", (data) => {
+      .on("data", async (data) => {
         // Add the planet if it meets the habitable criteria
         if (isHabitablePlanet(data)) {
-          habitablePlanets.push(data);
+          // To get the correct count in your .on('end') event, you should populate the array here:
+          // habitablePlanets.push(data);
+          await savePlanet(data);
         }
       })
       .on("error", (err) => {
@@ -37,17 +42,36 @@ function loadPlanetsData() {
         console.log("Error occurred:", err);
         reject(err);
       })
-      .on("end", () => {
-        // Print the final count of habitable planets
-        console.log(`${habitablePlanets.length} Habitable Planets were found`);
-
+      .on("end", async () => {
+        const countPlanetsFound = (await getAllPlanets()).length;
+        // To get the accurate count from the database instead of the in-memory array:
+        const countHabitablePlanets = (await getAllPlanets()).length;
+        console.log(`${countPlanetsFound} Habitable Planets were found`);
         resolve();
       });
   });
 }
 
-function getAllPlanets() {
-  return habitablePlanets;
+async function getAllPlanets() {
+  return await planets.find({});
+}
+
+async function savePlanet(planet) {
+  try {
+    await planets.updateOne(
+      {
+        keplerName: planet.kepler_name,
+      },
+      {
+        keplerName: planet.kepler_name,
+      },
+      {
+        upsert: true,
+      }
+    );
+  } catch (err) {
+    console.error(`Couldn't save planet ${err}`);
+  }
 }
 
 module.exports = {
