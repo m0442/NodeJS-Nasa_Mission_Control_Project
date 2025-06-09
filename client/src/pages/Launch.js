@@ -4,9 +4,15 @@ import Clickable from "../components/Clickable";
 
 const Launch = (props) => {
   const selectorBody = useMemo(() => {
+    // 1. استخدام "planet.keplerName" لجلب الاسم الصحيح
     return props.planets?.map((planet) => (
-      <option value={planet.keplerName} key={planet.keplerName}>
-        {planet.kepler_name}
+      <option
+        value={planet.keplerName}
+        key={planet.keplerName}
+        // 2. إضافة style لجعل لون الخط أسود
+        style={{ color: "black" }}
+      >
+        {planet.keplerName}
       </option>
     ));
   }, [props.planets]);
