@@ -32,9 +32,7 @@ function loadPlanetsData() {
       .on("data", async (data) => {
         // Add the planet if it meets the habitable criteria
         if (isHabitablePlanet(data)) {
-          // To get the correct count in your .on('end') event, you should populate the array here:
-          // habitablePlanets.push(data);
-          await savePlanet(data);
+          savePlanet(data);
         }
       })
       .on("error", (err) => {
@@ -45,7 +43,6 @@ function loadPlanetsData() {
       .on("end", async () => {
         const countPlanetsFound = (await getAllPlanets()).length;
         // To get the accurate count from the database instead of the in-memory array:
-        const countHabitablePlanets = (await getAllPlanets()).length;
         console.log(`${countPlanetsFound} Habitable Planets were found`);
         resolve();
       });
@@ -70,7 +67,7 @@ async function savePlanet(planet) {
       }
     );
   } catch (err) {
-    console.error(`Couldn't save planet ${err}`);
+    console.error(`Could not save planet ${err}`);
   }
 }
 

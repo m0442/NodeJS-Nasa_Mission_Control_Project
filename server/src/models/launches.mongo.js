@@ -4,9 +4,6 @@ const launchesSchema = new mongoose.Schema({
   flightNumber: {
     type: Number,
     required: true,
-    // default: 100,
-    // min: 100,
-    // max: 999,
   },
   launchDate: {
     type: Date,
@@ -20,11 +17,8 @@ const launchesSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  traget: {
+  target: {
     type: String,
-    required: true,
-    // type: mongoose.ObjectId,
-    // ref: "Planet",
   },
   customers: [String],
   upcoming: {
@@ -38,5 +32,5 @@ const launchesSchema = new mongoose.Schema({
   },
 });
 
-// Connects luanchesSchema for the 'launches' collections
+// Connects launchesSchema with the "launches" collection
 module.exports = mongoose.model("Launch", launchesSchema);
