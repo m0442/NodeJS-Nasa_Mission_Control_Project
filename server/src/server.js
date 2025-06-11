@@ -31,3 +31,5 @@ async function startServer() {
 }
 
 startServer();
+
+// mind-map the flow
